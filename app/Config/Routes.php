@@ -3,6 +3,9 @@
 namespace Config;
 
 // Create a new instance of our RouteCollection class.
+use App\Controllers\DisplayHalte;
+use App\Controllers\DisplayStasiun;
+
 $routes = Services::routes();
 
 // Load the system's routing file first, so that the app and ENVIRONMENT
@@ -35,7 +38,19 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
+$routes->get("/", [DisplayHalte::class, "index"]);
+
+$routes->group("halte", function ($routes)
+{
+    $routes->get('bus', [DisplayHalte::class, "bus"]);
+    $routes->get("pintu", [DisplayHalte::class, "pintu"]);
+    $routes->get("rute", [DisplayHalte::class, "rute"]);
+});
+
+$routes->group("stasiun", function ($routes)
+{
+    $routes->get('kereta', [DisplayStasiun::class, "kereta"]);
+});
 
 /*
  * --------------------------------------------------------------------
